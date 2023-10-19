@@ -61,3 +61,16 @@ void AssignedLinkedList::dealloc(){
     freeList.push_back(chunk);
 
 }
+
+AssignedLinkedList::~AssignedLinkedList() {
+    // std::cout << "Destructor called" << std::endl;
+    std::cout << "Destructor called" << std::endl;
+    for (auto i = allocatedList.begin(); i != allocatedList.end(); ++i) {
+        brk((*i)->space);
+        delete *i;
+    }
+    for (auto i = freeList.begin(); i != freeList.end(); ++i) {
+        brk((*i)->space);
+        delete *i;
+    }
+}
