@@ -30,10 +30,10 @@ void* AssignedLinkedList::alloc(std::size_t size){
 
 
 
-void dealloc(void* chunk_space) {
+void AssignedLinkedList::dealloc(void* chunk_space) {
     for (auto it = allocatedList.begin(); it != allocatedList.end(); ++it) {
         if ((*it)->space == chunk_space) {
-            Chunk* chunk = *it;
+            allocation* chunk = *it;
             allocatedList.erase(it);
             freeList.push_back(chunk);
             return;
