@@ -4,7 +4,7 @@
 #include <iostream>
 #include <list>
 #include <cstdlib>
-
+#include <unistd.h>
 
 class AssignedLinkedList{
 
