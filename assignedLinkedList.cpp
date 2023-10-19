@@ -31,6 +31,11 @@ void* AssignedLinkedList::alloc(std::size_t size){
 
 
 void AssignedLinkedList::dealloc(void* chunk_space) {
+
+    if (allocatedList.size() == 0) {
+        throw std::runtime_error("Attempted to deallocate memory that was never allocated.");
+    }
+
     for (auto it = allocatedList.begin(); it != allocatedList.end(); ++it) {
         if ((*it)->space == chunk_space) {
             allocation* chunk = *it;
@@ -42,4 +47,17 @@ void AssignedLinkedList::dealloc(void* chunk_space) {
 
     // If the chunk is not found in the allocated list, this is a fatal error.
     throw std::runtime_error("Attempted to deallocate memory that was never allocated.");
+}
+
+void AssignedLinkedList::dealloc(){
+    //remove last chuck from allocated and add to free list
+
+    if (allocatedList.size() == 0) {
+        throw std::runtime_error("Attempted to deallocate memory that was never allocated.");
+    }
+
+    allocation* chunk = allocatedList.back();
+    allocatedList.pop_back();
+    freeList.push_back(chunk);
+
 }

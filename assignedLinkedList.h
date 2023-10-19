@@ -19,9 +19,12 @@ class AssignedLinkedList{
 
         void* alloc(std::size_t chunk_size);
         void dealloc(void* chunk_space);
+        void dealloc();
+
 
 
         AssignedLinkedList();
+        ~AssignedLinkedList();
 
         void printAllocatedList();
 
