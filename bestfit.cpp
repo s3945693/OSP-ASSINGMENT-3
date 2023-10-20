@@ -6,9 +6,22 @@ AssignedLinkedList::AssignedLinkedList() {
     std::cout << "Constructor called" << std::endl;
 }
 
+
+
 void* AssignedLinkedList::alloc(std::size_t size){
+
+    std::size_t allocateMem = 600;
+
     for (auto i = freeList.begin(); i != freeList.end(); ++i) {
         if ((*i)->size >= size) {
+            if ((*i)->size < allocateMem){
+                allocateMem = (*i)->size;
+            }
+        }
+    }
+
+    for (auto i = freeList.begin(); i != freeList.end(); ++i) {
+        if ((*i)->size == allocateMem) {
             allocation* chunk = *i;
             freeList.erase(i);
             allocatedList.push_back(chunk);
@@ -17,7 +30,28 @@ void* AssignedLinkedList::alloc(std::size_t size){
     }
 
     // If no suitable chunk is found in the free list, use sbrk() to allocate more memory.
-    void* new_space = sbrk(size);
+
+    if (size <= 32){
+        allocateMem = 32;
+    }
+
+    else if (size <= 64){
+        allocateMem = 64;
+    }
+
+    else if (size<= 128){
+        allocateMem = 128;
+    }
+
+    else if (size <= 256){
+        allocateMem = 256;
+    }
+
+    else if (size <= 512){
+        allocateMem = 512;
+    }
+
+    void* new_space = sbrk(allocateMem);
     if (new_space == (void*) -1) {
         throw std::bad_alloc();
     }
@@ -27,8 +61,6 @@ void* AssignedLinkedList::alloc(std::size_t size){
     return new_space;
     
 }
-
-
 
 void AssignedLinkedList::dealloc(void* chunk_space) {
 
@@ -66,11 +98,15 @@ AssignedLinkedList::~AssignedLinkedList() {
     // std::cout << "Destructor called" << std::endl;
     std::cout << "Destructor called" << std::endl;
     for (auto i = allocatedList.begin(); i != allocatedList.end(); ++i) {
-        brk((*i)->space);
+        int ret = brk((*i)->space);
+        std::cout << "brk returned " << ret << std::endl;
         delete *i;
     }
     for (auto i = freeList.begin(); i != freeList.end(); ++i) {
-        brk((*i)->space);
+        int ret2 = brk((*i)->space);
+        std::cout << "brk2 returned " << ret2 << std::endl;
         delete *i;
     }
+
+    
 }
