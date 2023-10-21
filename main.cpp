@@ -8,12 +8,17 @@ int main(int argc, char** argv) {
     std::vector<std::string> function;
     //read in file
 
-    std::ifstream file("input.txt");
-
+    std::ifstream in;
+    in.open(argv[1]);
+    
+    if(!in){
+        std::cout << "Error opening file" << std::endl;
+        exit(1);
+    }
     std::string line;
 
 
-    while (std::getline(file, line)) {
+    while (std::getline(in, line)) {
         int a;
         std::string b;
         //split the string by colon
