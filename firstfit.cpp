@@ -44,7 +44,7 @@ void* AssignedLinkedList::alloc(std::size_t size){
         throw std::bad_alloc();
     }
 
-    allocation* new_chunk = new allocation{size, new_space};
+    allocation* new_chunk = new allocation{allocateMem, new_space};
     allocatedList.push_back(new_chunk);
     return new_space;
     
@@ -85,14 +85,28 @@ void AssignedLinkedList::dealloc(){
 AssignedLinkedList::~AssignedLinkedList() {
     // std::cout << "Destructor called" << std::endl;
     std::cout << "Destructor called" << std::endl;
+
+    std::cout << "Allocated List" << std::endl;
     for (auto i = allocatedList.begin(); i != allocatedList.end(); ++i) {
+
+        std::cout << (*i) << " " << (*i)->space << " " << (*i)->size <<std::endl;
         int ret = brk((*i)->space);
-        std::cout << "brk returned " << ret << std::endl;
+        if (ret == -1) {
+            std::cout << "brk encountered error" << std::endl;
+        }
+        
         delete *i;
     }
+
+    std::cout << "Free List" << std::endl;
+
     for (auto i = freeList.begin(); i != freeList.end(); ++i) {
+
+        std::cout << (*i) << " " << (*i)->space << " " << (*i)->size <<std::endl;
         int ret2 = brk((*i)->space);
-        std::cout << "brk2 returned " << ret2 << std::endl;
+        if (ret2 == -1) {
+            std::cout << "brk encountered error" << std::endl;
+        }
         delete *i;
     }
 

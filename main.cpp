@@ -45,11 +45,9 @@ int main(int argc, char** argv) {
 
     for (std::vector<int>::size_type i = 0; i < size.size(); i++) {
         if (function[i] == "alloc") {
-            std::cout << "allocating " << size[i] << " bytes" << std::endl;
             list->alloc(size[i]);
         }
         else if (function[i] == "dealloc") {
-            std::cout << "deallocating " << size[i] << " bytes" << std::endl;
             list->dealloc();
         }
         else {
