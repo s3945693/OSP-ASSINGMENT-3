@@ -11,6 +11,7 @@ class AssignedLinkedList{
     public:
         struct allocation {
             std::size_t size;
+            std::size_t used;
             void *space;
         };
 

@@ -11,6 +11,7 @@ void* AssignedLinkedList::alloc(std::size_t size){
         if ((*i)->size >= size) {
             allocation* chunk = *i;
             freeList.erase(i);
+            chunk->used = size;
             allocatedList.push_back(chunk);
             return chunk->space;
         }
@@ -44,7 +45,7 @@ void* AssignedLinkedList::alloc(std::size_t size){
         throw std::bad_alloc();
     }
 
-    allocation* new_chunk = new allocation{allocateMem, new_space};
+    allocation* new_chunk = new allocation{allocateMem, size, new_space};
     allocatedList.push_back(new_chunk);
     return new_space;
     
@@ -59,6 +60,7 @@ void AssignedLinkedList::dealloc(void* chunk_space) {
     for (auto it = allocatedList.begin(); it != allocatedList.end(); ++it) {
         if ((*it)->space == chunk_space) {
             allocation* chunk = *it;
+            chunk->used = 0;
             allocatedList.erase(it);
             freeList.push_back(chunk);
             return;
@@ -77,6 +79,7 @@ void AssignedLinkedList::dealloc(){
     }
 
     allocation* chunk = allocatedList.back();
+    chunk->used = 0;
     allocatedList.pop_back();
     freeList.push_back(chunk);
 
@@ -89,7 +92,7 @@ AssignedLinkedList::~AssignedLinkedList() {
     std::cout << "Allocated List" << std::endl;
     for (auto i = allocatedList.begin(); i != allocatedList.end(); ++i) {
 
-        std::cout << (*i) << " " << (*i)->space << " " << (*i)->size <<std::endl;
+        std::cout << (*i)->space << " " << (*i)->used << " " << (*i)->size <<std::endl;
         int ret = brk((*i)->space);
         if (ret == -1) {
             std::cout << "brk encountered error" << std::endl;
@@ -102,7 +105,7 @@ AssignedLinkedList::~AssignedLinkedList() {
 
     for (auto i = freeList.begin(); i != freeList.end(); ++i) {
 
-        std::cout << (*i) << " " << (*i)->space << " " << (*i)->size <<std::endl;
+        std::cout << (*i)->space << " " << (*i)->used << " " << (*i)->size <<std::endl;
         int ret2 = brk((*i)->space);
         if (ret2 == -1) {
             std::cout << "brk encountered error" << std::endl;
