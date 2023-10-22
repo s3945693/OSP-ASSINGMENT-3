@@ -104,7 +104,7 @@ AssignedLinkedList::~AssignedLinkedList() {
     std::cout << "Allocated List" << std::endl;
     for (auto i = allocatedList.begin(); i != allocatedList.end(); ++i) {
 
-        std::cout << (*i)->space << " " << (*i)->used << " " << (*i)->size <<std::endl;
+        std::cout << (*i)->space << " Used Memory: " << (*i)->used << " Total Memory: " << (*i)->size <<std::endl;
         int ret = brk((*i)->space);
         if (ret == -1) {
             std::cout << "brk encountered error" << std::endl;
@@ -117,7 +117,7 @@ AssignedLinkedList::~AssignedLinkedList() {
 
     for (auto i = freeList.begin(); i != freeList.end(); ++i) {
 
-        std::cout << (*i)->space << " " << (*i)->used << " " << (*i)->size <<std::endl;
+        std::cout << (*i)->space << " Used Memory: " << (*i)->used << " Total Memory: " << (*i)->size <<std::endl;
         int ret2 = brk((*i)->space);
         if (ret2 == -1) {
             std::cout << "brk encountered error" << std::endl;

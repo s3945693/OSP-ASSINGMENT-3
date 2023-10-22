@@ -2,6 +2,7 @@
 #include <vector>
 #include <iostream>
 #include <fstream>
+#include <chrono>
 
 int main(int argc, char** argv) {
     std::vector<int> size;
@@ -47,7 +48,7 @@ int main(int argc, char** argv) {
     }
 
     AssignedLinkedList* list = new AssignedLinkedList();
-
+    auto start = std::chrono::high_resolution_clock::now();
     for (std::vector<int>::size_type i = 0; i < size.size(); i++) {
         if (function[i] == "alloc") {
             list->alloc(size[i]);
@@ -59,6 +60,9 @@ int main(int argc, char** argv) {
             std::cout << "Error: invalid function" << std::endl;
         }
     }
+    auto end = std::chrono::high_resolution_clock::now();
+    double total = std::chrono::duration<double>(end - start).count();
+    std::cout << "Total time: " << total << std::endl;
     delete list;
     return 0;
 
