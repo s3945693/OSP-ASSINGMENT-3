@@ -2,8 +2,7 @@
 
 
 AssignedLinkedList::AssignedLinkedList() {
-    // std::cout << "Constructor called" << std::endl;
-    std::cout << "Constructor called" << std::endl;
+   
 }
 
 
@@ -11,6 +10,8 @@ AssignedLinkedList::AssignedLinkedList() {
 void* AssignedLinkedList::alloc(std::size_t size){
 
     std::size_t allocateMem = 600;
+
+    //finds a chunk from the free list that is big enough to fit the size
 
     for (auto i = freeList.begin(); i != freeList.end(); ++i) {
         if ((*i)->size >= size) {
@@ -79,7 +80,6 @@ void AssignedLinkedList::dealloc(void* chunk_space) {
         }
     }
 
-    // If the chunk is not found in the allocated list, this is a fatal error.
     throw std::runtime_error("Attempted to deallocate memory that was never allocated.");
 }
 
@@ -98,8 +98,6 @@ void AssignedLinkedList::dealloc(){
 }
 
 AssignedLinkedList::~AssignedLinkedList() {
-    // std::cout << "Destructor called" << std::endl;
-    std::cout << "Destructor called" << std::endl;
 
     std::cout << "Allocated List" << std::endl;
     for (auto i = allocatedList.begin(); i != allocatedList.end(); ++i) {

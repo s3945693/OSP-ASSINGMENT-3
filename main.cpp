@@ -7,8 +7,9 @@
 int main(int argc, char** argv) {
     std::vector<int> size;
     std::vector<std::string> function;
+    
+    
     //read in file
-
     std::ifstream in;
     in.open(argv[1]);
     
@@ -18,7 +19,7 @@ int main(int argc, char** argv) {
     }
     std::string line;
 
-
+    //reading the file in, and storing required data in the arrays
     while (std::getline(in, line)) {
         int a;
         std::string b;
@@ -35,10 +36,6 @@ int main(int argc, char** argv) {
         else{
 
             pos = line.find(delimiter);
-
-            //std::cout <<"here" << std::endl;
-            //std::cout << line.substr(pos+2) << std::endl;
-
             a = std::stoi(line.substr(pos+2));
             b = line.substr(0, pos);
 
@@ -46,6 +43,9 @@ int main(int argc, char** argv) {
             function.push_back(b);
         }
     }
+
+    //start of the experiment
+    //including a timer to measure the time taken
 
     AssignedLinkedList* list = new AssignedLinkedList();
     auto start = std::chrono::high_resolution_clock::now();
